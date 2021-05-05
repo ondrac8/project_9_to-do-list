@@ -13,7 +13,7 @@ const taskModule = (function() {
         this.completed = completed;
     };
 
-    const addNewTask = function(taskTitle, description, dueDate, priority, notes, completed) {
+    const addNewTask = function(taskTitle, description, dueDate, priority, notes) {
         taskTitle = new Task(taskTitle, description, dueDate, priority, notes, false);
         return taskTitle
     };
@@ -37,8 +37,8 @@ const projectModule = (function() {
     };
 
     const projects = {
-        allProjects: {
-            title: "All projects",
+        "All Projects": {
+            title: "All Projects",
             taskArray: [],
             active: true
         },
@@ -46,7 +46,6 @@ const projectModule = (function() {
 
     const addNewProject = function(title) {
         projects[title] = new NewProject(title);
-        console.log(projects);
     };
 
     const getAllProjectTitles = function() {
@@ -54,17 +53,40 @@ const projectModule = (function() {
 
         for (const key in projects) {
             if (projects.hasOwnProperty(key)) {
-                console.log(key);
                 allProjectTitles.push(projects[key].title);
             }
         }
 
         return allProjectTitles;
+    };
+
+    const setActiveProject = function(target) {
+        // first set the active attribute to false in all objects
+        for (const key in projects) {
+            projects[key]["active"] = false;
+        }
+
+        // then set the target object as active
+        projects[target]["active"] = true;
     }
+
+    const getActiveProject = function() {
+        let activeProject = null;
+
+        for (const key in projects) {
+            if (projects[key]["active"] == true) {
+                activeProject = projects[key];
+            }
+        };
+
+        return activeProject;
+    };
 
     return {
         projects,
         addNewProject,
-        getAllProjectTitles
+        getAllProjectTitles,
+        setActiveProject,
+        getActiveProject
     }
 })();

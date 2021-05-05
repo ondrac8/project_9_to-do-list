@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./style.css">
+
     <title>To-do list</title>
 </head>
 <body>
@@ -12,16 +16,25 @@
     <nav>
         <h1>menu</h1>
         <h2>username</h2>
-        <button id="create-task">create a task</button>
+        
+        <button id="create-task">create new task</button>
+        <input type="text" id="new-task" name="new-task">
+        <br>
+
+        <button id="create-project">create new project</button>
+        <input type="text" name="new-project" id="new-project">
+
         <ul id="navbar-project-list">
             
         </ul>
     </nav>
     <main>
-        <div>Object 1</div>
+        <div id="task-wrapper"></div>
     </main>
     
 </body>
+
 <script src="main.js"></script>
 <script src="../src/index.js" type="module"></script>
+
 </html>
