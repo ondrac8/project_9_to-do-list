@@ -2,7 +2,7 @@ export { taskModule, projectModule };
 
 const taskModule = (function() {
 
-// constructors for tasks
+// constructor for tasks + function to create one
 
     const Task = function(title, taskDescription, dueDate, priority, notes, completed) {
         this.title = title;
@@ -28,13 +28,15 @@ const projectModule = (function() {
 
     // project constructor
     // all new projects will be stored in the projects object
-    // the object has an active property, which servers as an identificator for new tasks
+    // the object has an active property - boolean, which servers as an identificator for new tasks
 
     const NewProject = function(title) {
         this.title = title;
         this.taskArray = [];
         this.active = false;
     };
+
+    // main object in the entire project. Stores all projects as properties. Stores all tasks in properties' arrays
 
     const projects = {
         "All Projects": {
@@ -45,10 +47,15 @@ const projectModule = (function() {
     };
 
     const addNewProject = function(title) {
-        projects[title] = new NewProject(title);
+        if (projects.hasOwnProperty(title)) {
+            alert("Project already exists.")
+        }
+        else {
+            projects[title] = new NewProject(title);
+        }
     };
 
-    const getAllProjectTitles = function() {
+    const getAllProjectTitles = function() { // returns an array with all project titles
         let allProjectTitles = [];
 
         for (const key in projects) {
@@ -60,7 +67,7 @@ const projectModule = (function() {
         return allProjectTitles;
     };
 
-    const setActiveProject = function(target) {
+    const setActiveProject = function(target) { // change the active property of the selected project
         // first set the active attribute to false in all objects
         for (const key in projects) {
             projects[key]["active"] = false;
@@ -70,7 +77,7 @@ const projectModule = (function() {
         projects[target]["active"] = true;
     }
 
-    const getActiveProject = function() {
+    const getActiveProject = function() { // loops through all projects and gets the one where active == true
         let activeProject = null;
 
         for (const key in projects) {
@@ -82,11 +89,16 @@ const projectModule = (function() {
         return activeProject;
     };
 
+    const removeTask = function(projectName, taskIndex) {
+        projects[projectName].taskArray.splice(taskIndex, 1);
+    }
+
     return {
         projects,
         addNewProject,
         getAllProjectTitles,
         setActiveProject,
-        getActiveProject
+        getActiveProject,
+        removeTask
     }
 })();

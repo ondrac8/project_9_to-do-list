@@ -5,33 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./all.css">
     <link rel="stylesheet" href="./style.css">
-
+    
     <title>To-do list</title>
 </head>
-<body>
+
+<body id="wrapper-all">
     <header>
-        <h1>to-do list + logo</h1>
+        <i class="far fa-check-square fa-2x "></i>
+        <h1>task planner</h1>
     </header>
-    <nav>
-        <h1>menu</h1>
-        <h2>username</h2>
-        
-        <button id="create-task">create new task</button>
-        <input type="text" id="new-task" name="new-task">
-        <br>
 
-        <button id="create-project">create new project</button>
-        <input type="text" name="new-project" id="new-project">
+    <div id="wrapper-nav-main">
+        <nav>
+            <h2 id="h2-create-new-task" class="h2-menu">Create new task</h2>
+            <div class="create-new-div create-new-div-hidden" id="unhide-new-task-div">
+                <input type="text" id="new-task" name="new-task">
+                <i class="fas fa-plus fa-2x" id="create-task"></i>
+            </div>
 
-        <ul id="navbar-project-list">
+            <h2 id="h2-create-new-project" class="h2-menu">Create new project</h2>
+            <div class="create-new-div create-new-div-hidden" id="unhide-new-project-div">
+                <input type="text" name="new-project" id="new-project">
+                <i class="fas fa-plus fa-2x" id="create-project"></i>
+            </div>
+
             
-        </ul>
-    </nav>
-    <main>
-        <div id="task-wrapper"></div>
-    </main>
-    
+            <h2 id="h2-project-list">List of projects:</h2>
+            <ul id="navbar-project-list"></ul>
+        </nav>
+
+        <main>
+            <div id="task-wrapper"></div>
+        </main>
+    </div>    
 </body>
 
 <script src="main.js"></script>

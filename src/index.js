@@ -5,6 +5,7 @@ import { setUpDOM, refreshNavbar, renderProjectContents } from './dom-manipulati
 function init() {
     setUpDOM();
     refreshNavbar();
+    renderProjectContents();
 }
 
 init();
