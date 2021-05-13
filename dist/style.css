@@ -88,6 +88,11 @@ nav h1 {
 .create-new-div-hidden {
     display: none;
 }
+
+.create-new-div i {
+    color: #605F5E;
+}
+
 .create-new-div i:hover {
     color: #A5BE00;
 }
@@ -122,9 +127,97 @@ main {
 main h2 {
     color: #605F5E;
     margin-bottom: 1em;
+    font-weight: bold;
+}
+
+.main-task-holder {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-row-gap: 1em;
+    grid-column-gap: 1em;
 }
 
 .main-task {
     border-style: solid;
+    background-color: #D8DAD3;
+    color: #605F5E;
+    padding: 1em 1em 1em 1em;
+}
+
+.main-task p {
+    margin-bottom: 1em;
+}
+
+.main-task button {
+    border-style: none;
+    height: 2.33em;
+    background-color: #605F5E;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1em;
+    color: #D8DAD3;
+    cursor: pointer;
+    margin-right: 1px;
+}
+
+.main-task button:hover {
     background-color: #A5BE00;
+    color: #605F5E;
+}
+
+.main-task-completed {
+    background-color: #A5BE00;
+}
+
+.task-pop-up {
+    flex: 15 1 auto;
+    padding: 1em 1em 1em 1em;
+    left: 50%;
+    bottom: 50%;
+    background-color: #D8DAD3;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+}
+
+.task-pop-up label {
+    display: block;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #605F5E;
+}
+
+.task-pop-up input {
+    border-style: none;
+    width: 30%;
+    height: 2em;
+    background-color: #A5BE00;
+    color: #F9F4F5;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.task-pop-up select {
+    border-style: none;
+    width: 30%;
+    height: 2em;
+    background-color: #A5BE00;
+    color: #F9F4F5;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.task-pop-up button {
+    border-style: none;
+    height: 2.33em;
+    background-color: #605F5E;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1em;
+    color: #D8DAD3;
+    cursor: pointer;
+}
+
+.task-pop-up button:hover {
+    background-color: #A5BE00;
+    color: #605F5E;
 }

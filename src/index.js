@@ -1,4 +1,4 @@
-import { taskModule, projectModule } from './create-task-project.js';
+// import { taskModule, projectModule } from './create-task-project.js';
 import { setUpDOM, refreshNavbar, renderProjectContents } from './dom-manipulation.js';
 
 

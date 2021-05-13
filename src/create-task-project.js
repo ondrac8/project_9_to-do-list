@@ -93,12 +93,52 @@ const projectModule = (function() {
         projects[projectName].taskArray.splice(taskIndex, 1);
     }
 
+    const changeTaskPriority = function(projectName, index) {
+        let currentPriority = projects[projectName].taskArray[index].priority;
+        let pNumber;
+
+        if (currentPriority == "Low") {
+            pNumber = 1;
+        }
+
+        else if (currentPriority == "Medium") {
+            pNumber = 2;
+        }
+
+        else {
+            pNumber = 3;
+        }
+
+        let priorityLevel = {
+            1: "Low",
+            2: "Medium",
+            3: "High"
+        };
+        pNumber++
+        if (pNumber == 4) {
+            pNumber = 1
+        };
+
+        projects[projectName].taskArray[index].priority = priorityLevel[pNumber];
+    }
+
+    const toggleCompleted = function(projectName, taskIndex) {
+        if (projects[projectName].taskArray[taskIndex].completed == false) {
+            projects[projectName].taskArray[taskIndex].completed = true;
+        }
+       else {
+           projects[projectName].taskArray[taskIndex].completed = false;
+        }
+    }
+
     return {
         projects,
         addNewProject,
         getAllProjectTitles,
         setActiveProject,
         getActiveProject,
-        removeTask
+        removeTask,
+        changeTaskPriority,
+        toggleCompleted
     }
 })();
