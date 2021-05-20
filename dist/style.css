@@ -133,6 +133,7 @@ main h2 {
 .main-task-holder {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(minmax(1fr, auto));
     grid-row-gap: 1em;
     grid-column-gap: 1em;
 }
@@ -142,6 +143,15 @@ main h2 {
     background-color: #D8DAD3;
     color: #605F5E;
     padding: 1em 1em 1em 1em;
+}
+
+.main-task-hidden {
+    display: none;
+}
+
+.main-task-title {
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .main-task p {
@@ -157,6 +167,7 @@ main h2 {
     color: #D8DAD3;
     cursor: pointer;
     margin-right: 1px;
+    margin-bottom: 1px;
 }
 
 .main-task button:hover {
@@ -210,6 +221,7 @@ main h2 {
 .task-pop-up button {
     border-style: none;
     height: 2.33em;
+    width: calc(30% + 2px);
     background-color: #605F5E;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 1em;

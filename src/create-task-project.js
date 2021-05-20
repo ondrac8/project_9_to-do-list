@@ -1,4 +1,4 @@
-export { taskModule, projectModule };
+export { taskModule, projectModule, saveToLocalStorage };
 
 const taskModule = (function() {
 
@@ -38,7 +38,7 @@ const projectModule = (function() {
 
     // main object in the entire project. Stores all projects as properties. Stores all tasks in properties' arrays
 
-    const projects = {
+    let projects = {
         "All Projects": {
             title: "All Projects",
             taskArray: [],
@@ -131,6 +131,19 @@ const projectModule = (function() {
         }
     }
 
+    const synchronizeAllProjects = function() { // function to ensure all projects contains all tasks from all projects
+        let allTasks = [];
+
+        for (const key in projects) {
+            projects[key].taskArray.forEach(task => {
+                allTasks.push(task);
+            })
+        }
+        // >THE LOGIC HERE IS WRONG == CHANGE
+        console.log(allTasks);
+        projects["All Projects"].taskArray = allTasks;
+    }
+
     return {
         projects,
         addNewProject,
@@ -139,6 +152,26 @@ const projectModule = (function() {
         getActiveProject,
         removeTask,
         changeTaskPriority,
-        toggleCompleted
+        toggleCompleted,
+        synchronizeAllProjects
     }
+})();
+
+const saveToLocalStorage = (function() {
+    
+    function setLocalStorage() {
+        localStorage.setItem('localProjects', JSON.stringify(projectModule.projects));
+    };
+    
+    function getLocalStorage() {
+        let localObject = JSON.parse(localStorage.getItem('localProjects'));
+        Object.assign(projectModule.projects, localObject);
+        console.log(projectModule.projects);
+        // projectModule.projects = JSON.parse(localStorage.getItem('localProjects'));
+    }
+
+    return {
+        setLocalStorage,
+        getLocalStorage
+    };
 })();

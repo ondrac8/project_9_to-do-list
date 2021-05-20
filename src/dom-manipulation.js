@@ -1,4 +1,4 @@
-import { taskModule, projectModule } from "./create-task-project.js";
+import { taskModule, projectModule, saveToLocalStorage } from "./create-task-project.js";
 
 export { setUpDOM, refreshNavbar, renderProjectContents }
 
@@ -19,6 +19,7 @@ const setUpDOM = function() {
         
         createProjectButton.addEventListener('click', function() {
             projectModule.addNewProject(inputProjectName.value);
+            saveToLocalStorage.setLocalStorage();
             refreshNavbar();
         });
     }
@@ -110,7 +111,7 @@ const createNewTaskForm = function() {
         document.querySelector("#Title").value = document.querySelector("#new-task").value; // transfer the text from the new task field to the form
     };
 
-    let getFormValues = function() { // cycle through the form fields and get the values 
+    const getFormValues = function() { // cycle through the form fields and get the values 
         let sourceFields = ["Title", "Task description", "Due date", "Priority", "Notes"];
         let formValues = [];
 
@@ -124,12 +125,14 @@ const createNewTaskForm = function() {
         return formValues
     }
 
-    let createNewTask = function() { // get values from the form and apply them to the constructor
+    const createNewTask = function() { // get values from the form and apply them to the constructor
         let sourceData = getFormValues();
         let newTask = taskModule.addNewTask(sourceData[0], sourceData[1], sourceData[2], sourceData[3], sourceData[4], false); // all new tasks have completed set to false
 
         let destinationActiveProject = projectModule.getActiveProject(); // get active project from the projects object. push the new task to it
         destinationActiveProject.taskArray.push(newTask);
+        projectModule.synchronizeAllProjects();
+        saveToLocalStorage.setLocalStorage();
         refreshNavbar();
         renderProjectContents();
     };
@@ -198,16 +201,24 @@ const renderProjectContents = function() {
         const activeProject = projectModule.getActiveProject();
         let i = 0;
 
-        const contentHeader = document.createElement('h2'); // show the active project's title as header
-        contentHeader.textContent = activeProject.title;
-        targetWrapper.appendChild(contentHeader);
+        function createHeader() {
+            const contentHeader = document.createElement('h2'); // show the active project's title as header
+            contentHeader.textContent = activeProject.title;
+            targetWrapper.appendChild(contentHeader);
+        };
+        
+        createHeader();
 
         const taskHolder = document.createElement('div'); // this div holds all tasks cards, displays them in a grid
         taskHolder.classList.add('main-task-holder');
 
         activeProject.taskArray.forEach(task => {
+
             let taskWrapper = document.createElement('div'); // task card
+            let taskWrapperHiddenPart = document.createElement('div');
             taskWrapper.classList.add('main-task');
+            taskWrapperHiddenPart.classList.add('main-task-hidden');
+            taskWrapperHiddenPart.id = task['title'] + i.toString();
 
             if (task.completed == true) { // completed tasks will get a class with different color background
                 taskWrapper.classList.add("main-task-completed");
@@ -219,18 +230,38 @@ const renderProjectContents = function() {
             let j = 0;
             taskData.forEach(item => {    
                 let field = document.createElement('p');
+                field.id = 'field' + task['title'] + item + i;
                 field.textContent = `${fieldTitles[j]}: ${task[item]}`;
-                taskWrapper.appendChild(field);
+                if (item == "title") {
+                    field.dataset.index = i;
+                    field.addEventListener('click', function(e) {
+                        let targetID = task['title'] + e.target.dataset.index;
+                        let targetDiv = document.getElementById(targetID);
+                        targetDiv.classList.toggle('main-task-hidden');
+                    });
+                    field.classList.add('main-task-title');
+                    taskWrapper.appendChild(field);
+                }
+                
+                else {
+                    taskWrapperHiddenPart.appendChild(field);
+                }
+
                 j++;
+
             });
 
             let removeTaskButton = document.createElement('button');    // button to remove the task from the array
-            removeTaskButton.textContent = "Delete task";
+            let deleteIcon = document.createElement('i');
+            deleteIcon.classList.add('fas'); deleteIcon.classList.add('fa-trash');
+            
+            removeTaskButton.appendChild(deleteIcon);
             removeTaskButton.dataset.taskIndex = i;
 
             removeTaskButton.dataset.projectTitle = activeProject.title; // event listener for the button
-            removeTaskButton.addEventListener('click', function(event) {
-                projectModule.removeTask(event.target.dataset.projectTitle, event.target.dataset.taskIndex);
+
+            deleteIcon.addEventListener('click', function(event) {
+                projectModule.removeTask(event.target.parentElement.dataset.projectTitle, event.target.dataset.taskIndex);
                 clearTargetContents();
                 createTargetContents();
                 refreshNavbar();
@@ -241,9 +272,12 @@ const renderProjectContents = function() {
             changePriorityButton.dataset.index = i;
             changePriorityButton.dataset.projectTitle = activeProject.title;
             changePriorityButton.addEventListener('click', function(e) {
+                
                 projectModule.changeTaskPriority(e.target.dataset.projectTitle, e.target.dataset.index);
-                clearTargetContents();
-                createTargetContents();
+
+                let priorityFieldID = 'field' + activeProject.taskArray[e.target.dataset.index].title + 'priority' + e.target.dataset.index;
+                let targetPriorityField = document.getElementById(priorityFieldID);
+                targetPriorityField.textContent = 'Priority: ' + activeProject.taskArray[e.target.dataset.index].priority;
             })
             
             let markCompleteButton = document.createElement('button');    // button to change the priority of the task
@@ -252,28 +286,37 @@ const renderProjectContents = function() {
             }
 
             else {
-                markCompleteButton.textContent = "Mark complete";
+                markCompleteButton.textContent = "";
             }
 
             markCompleteButton.dataset.index = i;
             markCompleteButton.dataset.projectTitle = activeProject.title;
-            markCompleteButton.addEventListener('click', function(eventTarget) {
-                projectModule.toggleCompleted(eventTarget.target.dataset.projectTitle, eventTarget.target.dataset.index);
-                if (task.completed == true) {
-                    markCompleteButton.textContent = "Completed";
-                }
+            let completeIcon = document.createElement('i');
+            completeIcon.classList.add('fas'); completeIcon.classList.add('fa-check');
 
-                else {
-                    markCompleteButton.textContent = "Mark complete";
+            markCompleteButton.appendChild(completeIcon);
+
+            completeIcon.addEventListener('click', function(eventTarget) {
+                projectModule.toggleCompleted(eventTarget.target.parentElement.dataset.projectTitle, eventTarget.target.parentElement.dataset.index);
+                
+                if (eventTarget.target.parentElement.parentElement.classList.contains('main-task-completed')) {
+                    eventTarget.target.parentElement.parentElement.classList.toggle('main-task-completed');
                 }
-                clearTargetContents();
-                createTargetContents();
+                else {
+                    eventTarget.target.parentElement.parentElement.classList.add('main-task-completed')
+                }             
+            
             })
 
-            // add hte buttons to the task card
-            taskWrapper.appendChild(removeTaskButton);
-            taskWrapper.appendChild(changePriorityButton);
+            taskWrapperHiddenPart.appendChild(changePriorityButton);
+            
+
+            taskWrapper.appendChild(taskWrapperHiddenPart);
+
+            // add the delete button and mark complete button to the task card
             taskWrapper.appendChild(markCompleteButton);
+            taskWrapper.appendChild(removeTaskButton);
+            
 
             taskHolder.appendChild(taskWrapper);
             targetWrapper.appendChild(taskHolder);
