@@ -1,5 +1,5 @@
 import { taskModule, projectModule, saveToLocalStorage } from './create-task-project.js';
-import { init, navbarMenu, setUpDOM, renderProjectContents } from './dom-controls.js';
+import { navbarMenu, setUpDOM, renderProjectContents } from './dom-controls.js';
 
 
 window.onload = function() {
@@ -14,7 +14,6 @@ window.onload = function() {
     setUpDOM.eventHandlerUnhideInputFields();
     setUpDOM.eventHandlerMenuIcons();
     setUpDOM.eventHandlerViewAllTasks();
-    setUpDOM.eventHandlerCreateNewProject();
     setUpDOM.runDynamicEventListeners();
 };
 

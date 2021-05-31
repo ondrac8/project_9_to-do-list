@@ -1,6 +1,6 @@
 import { taskModule, projectModule, saveToLocalStorage } from "./create-task-project.js";
 
-export { init, navbarMenu, setUpDOM, renderProjectContents }
+export { navbarMenu, setUpDOM, renderProjectContents }
 
 const setUpDOM = (function() {
 
@@ -96,7 +96,7 @@ const setUpDOM = (function() {
         eventHandlerMenuListItems();
         eventHandlerMenuIcons();
         eventHandlerAddNewTask();
-        eventHandlerAddIconListeners();
+        // eventHandlerAddIconListeners();
     }
 
     const eventHandlerAddIconListeners = function() {
@@ -119,7 +119,12 @@ const setUpDOM = (function() {
         for (let j = 0; j < allCompleteIcons.length; j++) {
             allCompleteIcons[j].addEventListener('click', function(e) {
                 projectModule.toggleCompleted(e.target.dataset.project, e.target.dataset.index);
-                e.target.parentElement.parentElement.parentElement.classList.toggle('main-task-completed');
+                if (e.target.parentElement.parentElement.parentElement.classList.contains('main-task-completed')) {
+                    e.target.parentElement.parentElement.parentElement.classList.toggle('main-task-completed');
+                }
+                else {
+                    e.target.parentElement.parentElement.parentElement.classList.add('main-task-completed');
+                }
                 saveToLocalStorage.setLocalStorage();
             })
         }
@@ -430,12 +435,3 @@ const renderProjectContents = (function() {
         createTaskElements
     }
 })();
-
-const init = function() {
-    navbarMenu.clearMenuItems();
-    navbarMenu.createMenuItems();
-    setUpDOM.eventHandlerUnhideInputFields();
-    setUpDOM.eventHandlerCreateNewProject();
-    setUpDOM.runDynamicEventListeners();
-    setUpDOM.eventHandlerViewAllTasks();
-};
