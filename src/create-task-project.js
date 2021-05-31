@@ -39,11 +39,11 @@ const projectModule = (function() {
     // main object in the entire project. Stores all projects as properties. Stores all tasks in properties' arrays
 
     let projects = {
-        "All Projects": {
-            title: "All Projects",
+        "My Project": {
+            title: "My Project",
             taskArray: [],
             active: true
-        },
+        }
     };
 
     const addNewProject = function(title) {
@@ -54,6 +54,12 @@ const projectModule = (function() {
             projects[title] = new NewProject(title);
         }
     };
+
+    const removeProject = function(title) {
+        if (title != "All Projects") {
+            delete projects[title];
+        }
+    }
 
     const getAllProjectTitles = function() { // returns an array with all project titles
         let allProjectTitles = [];
@@ -137,16 +143,16 @@ const projectModule = (function() {
         for (const key in projects) {
             projects[key].taskArray.forEach(task => {
                 allTasks.push(task);
-            })
+            });
         }
-        // >THE LOGIC HERE IS WRONG == CHANGE
-        console.log(allTasks);
-        projects["All Projects"].taskArray = allTasks;
+
+        return allTasks;
     }
 
     return {
         projects,
         addNewProject,
+        removeProject,
         getAllProjectTitles,
         setActiveProject,
         getActiveProject,
@@ -166,7 +172,6 @@ const saveToLocalStorage = (function() {
     function getLocalStorage() {
         let localObject = JSON.parse(localStorage.getItem('localProjects'));
         Object.assign(projectModule.projects, localObject);
-        console.log(projectModule.projects);
         // projectModule.projects = JSON.parse(localStorage.getItem('localProjects'));
     }
 

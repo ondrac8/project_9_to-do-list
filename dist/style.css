@@ -30,19 +30,24 @@ header i {
 
 #wrapper-nav-main {
     display: flex;
-    height: calc(100vh - 3.4em);
+    height: calc(100% - 3.4em);
 }
 
 nav {
     background-color: #D8DAD3;
     flex: 0 1 auto;
     min-width: 20em;
+    height: calc(100vh - 3.4em);
+    position: sticky;
 }
 
 ul * {
     color: #605F5E;
     cursor: pointer;
-    height: 2em;
+    max-height: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 ul {
@@ -50,9 +55,41 @@ ul {
     flex-direction: column;
 }
 
+#h2-all-tasks:hover {
+    background-color: #605F5E;
+    color: #D8DAD3;
+    transition: 0.4s;
+}
+
+.priority-button {
+    position: relative;
+    background-color: #605F5E;
+    bottom: 3px;
+    border-style: none;
+    color: #F9F4F5;
+    height: 2em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.priority-button:hover {
+    cursor: pointer;
+    color: #FF6700;
+}
+
+.h2-all-tasks-active {
+    color: #A5BE00;
+    background-color: #605F5E;
+}
+
+.remove-icon {
+    color: #A5BE00;
+    position: relative;
+    top: 8px;
+}
+
 .list-item {
     height: auto;
-    padding: 1em 0em 1em 1em;
+    padding: 0em 1em 1em 1em;
 }
 
 .list-item:hover {
@@ -101,7 +138,7 @@ nav h1 {
     background-color: #605F5E;
     color: #A5BE00;
     height: auto;
-    padding: 1em 0em 1em 1em;
+    padding: 0em 1em 1em 1em;
 }
 
 #h2-project-list {
@@ -122,6 +159,8 @@ main {
     background-color: #F9F4F5;
     flex: 15 1 auto;
     padding: 1em 1em 1em 1em;
+    overflow-y: scroll;
+    max-height: 90vh;
 }
 
 main h2 {
@@ -143,6 +182,7 @@ main h2 {
     background-color: #D8DAD3;
     color: #605F5E;
     padding: 1em 1em 1em 1em;
+    margin-bottom: 1em;
 }
 
 .main-task-hidden {
@@ -158,25 +198,25 @@ main h2 {
     margin-bottom: 1em;
 }
 
-.main-task button {
-    border-style: none;
-    height: 2.33em;
-    background-color: #605F5E;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 1em;
-    color: #D8DAD3;
-    cursor: pointer;
-    margin-right: 1px;
-    margin-bottom: 1px;
-}
-
-.main-task button:hover {
-    background-color: #A5BE00;
-    color: #605F5E;
-}
-
 .main-task-completed {
     background-color: #A5BE00;
+}
+
+.main-task-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task-icon {
+    display: inline;
+    color: #605F5E;
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.task-icon:hover {
+    color: #FF6700;
 }
 
 .task-pop-up {

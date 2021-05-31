@@ -1,18 +1,23 @@
 import { taskModule, projectModule, saveToLocalStorage } from './create-task-project.js';
-import { setUpDOM, refreshNavbar, renderProjectContents } from './dom-manipulation.js';
+import { init, navbarMenu, setUpDOM, renderProjectContents } from './dom-controls.js';
+
 
 window.onload = function() {
     if (localStorage.length > 0) {
         saveToLocalStorage.getLocalStorage();
-        renderProjectContents();
-        refreshNavbar();
+
     };
+
+    navbarMenu.clearMenuItems();
+    navbarMenu.createMenuItems();
+    setUpDOM.eventHandlerMenuListItems();
+    setUpDOM.eventHandlerUnhideInputFields();
+    setUpDOM.eventHandlerMenuIcons();
+    setUpDOM.eventHandlerViewAllTasks();
+    setUpDOM.eventHandlerCreateNewProject();
+    setUpDOM.runDynamicEventListeners();
 };
 
-function init() {
-    setUpDOM();
-    refreshNavbar();
-    renderProjectContents();
-}
 
-init();
+projectModule.setActiveProject('My Project');
+renderProjectContents.renderSelectedProject();
